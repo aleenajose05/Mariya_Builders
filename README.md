@@ -22,6 +22,8 @@ A static multi-page website for Mariya Builders, Market Road, Rajakkad, Idukki. 
 
 ## Updating content
 - **Reviews:** edit `js/reviews.js`. The three starter entries are *samples* (they show a "Sample" tag). Replace them with real customer reviews and remove `sample: true`. The average rating and star breakdown are calculated automatically.
-- **Photos:** images live in `images/`. The Projects page also has spots for
-  `images/stone-cladding-home.jpg` and `images/modern-two-storey.jpg`. Add photos with those names and they appear automatically; until then those spots stay hidden.
+- **Photos:** upload the photo into the `images/` folder (lowercase name, dashes, no spaces, e.g. `my-new-home.jpg`), then add one line to `js/projects.js`:
+  `{ file: "my-new-home.jpg", title: "Name of the home", details: "Short details" },`
+  The Projects page shows every photo in the list; the home page shows the first 5. Missing files are skipped, so
+  `stone-cladding-home.jpg` and `modern-two-storey.jpg` appear as soon as those files are uploaded.
 - Header and footer are repeated in each HTML file, so change the phone number or address in every page (search for `7034353114`).

@@ -35,6 +35,28 @@
     revealEls.forEach(function (el) { el.classList.add("visible"); });
   }
 
+  // Project gallery — built from js/projects.js
+  // Layout repeats in groups of five: two wide photos, then three tall ones.
+  document.querySelectorAll("[data-projects]").forEach(function (box) {
+    var list = window.MB_PROJECTS || [];
+    var limit = parseInt(box.getAttribute("data-projects"), 10) || list.length;
+    list.slice(0, limit).forEach(function (p, i) {
+      var fig = document.createElement("figure");
+      fig.className = "project reveal visible" + (i % 5 < 2 ? " wide" : "");
+      var img = document.createElement("img");
+      img.src = "images/" + p.file;
+      img.alt = (p.title || "Project") + " built by Mariya Builders";
+      img.loading = "lazy";
+      img.onerror = function () { fig.remove(); };
+      var cap = document.createElement("figcaption");
+      var t = document.createElement("strong"); t.textContent = p.title || "";
+      var d = document.createElement("span"); d.textContent = p.details || "";
+      cap.appendChild(t); cap.appendChild(d);
+      fig.appendChild(img); fig.appendChild(cap);
+      box.appendChild(fig);
+    });
+  });
+
   // Project gallery lightbox
   var lightbox = document.querySelector(".lightbox");
   if (lightbox) {
