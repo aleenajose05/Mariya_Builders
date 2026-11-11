@@ -136,6 +136,80 @@
     });
   }
 
+  // ---------- Header: solid once the page scrolls ----------
+  var headerEl = document.querySelector(".site-header");
+  if (headerEl) {
+    var onScroll = function () { headerEl.classList.toggle("scrolled", window.scrollY > 40); };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  // ---------- Hero slideshow ----------
+  var slides = document.querySelectorAll(".hero-slide");
+  var dots = document.querySelectorAll(".hero-dots span");
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (slides.length > 1) {
+    var cur = 0;
+    setInterval(function () {
+      slides[cur].classList.remove("active");
+      if (dots[cur]) dots[cur].classList.remove("active");
+      cur = (cur + 1) % slides.length;
+      slides[cur].classList.add("active");
+      if (dots[cur]) dots[cur].classList.add("active");
+    }, reduceMotion ? 9000 : 6500);
+  }
+
+  // ---------- Calling ----------
+  // Phones dial straight away through the tel: link.
+  // Laptops/desktops usually have no phone app, so a tel: link does nothing there;
+  // on those devices we show a call box with the number, a QR code to scan
+  // with a phone, a copy button, and a "call from this device" option.
+  var dialog = document.getElementById("call-dialog");
+  var isPhone = /Android|iPhone|iPad|iPod|Mobile|Opera Mini|IEMobile/i.test(navigator.userAgent) ||
+    (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent)); // iPadOS
+  var lastFocus = null;
+  function openCall() {
+    lastFocus = document.activeElement;
+    dialog.hidden = false;
+    document.body.style.overflow = "hidden";
+    var c = dialog.querySelector(".call-close");
+    if (c) c.focus();
+  }
+  function closeCall() {
+    dialog.hidden = true;
+    document.body.style.overflow = "";
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  if (dialog) {
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="tel:"]');
+      if (!a || a.hasAttribute("data-direct") || isPhone) return; // let the phone dial
+      e.preventDefault();
+      openCall();
+    });
+    dialog.addEventListener("click", function (e) {
+      if (e.target === dialog || e.target.closest(".call-close")) closeCall();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !dialog.hidden) closeCall();
+    });
+    var copyBtn = dialog.querySelector("[data-copy]");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", function () {
+        var num = copyBtn.getAttribute("data-copy");
+        var done = function () {
+          copyBtn.textContent = "Copied ✓";
+          setTimeout(function () { copyBtn.textContent = "Copy Number"; }, 2000);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(num).then(done, function () { window.prompt("Copy the number:", num); });
+        } else {
+          window.prompt("Copy the number:", num);
+        }
+      });
+    }
+  }
+
   // Footer year
   var y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();

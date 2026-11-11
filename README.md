@@ -15,8 +15,9 @@ A static multi-page website for Mariya Builders, Market Road, Rajakkad, Idukki. 
 | Contact (call, WhatsApp, enquiry form, map) | `contact.html` |
 
 ## Contact behaviour
-- Every **Contact Now** button is a `tel:+917034353114` link, so tapping it on a phone places a call.
-- A floating call button and a floating WhatsApp button appear on every page.
+- Every **Contact Now** button is a `tel:+917034353114` link. On a phone, tapping it opens the dialler with the number ready to call.
+- On a laptop or desktop (which usually can't place calls), the button opens a call box instead. It shows the number, a QR code (`images/call-qr.svg`) that dials when scanned with a phone, a copy button, and a "call from this device" option.
+- Phones get a fixed **Call Now / WhatsApp** bar at the bottom of the screen; larger screens get floating call and WhatsApp buttons.
 - The enquiry form and the review form open WhatsApp with the message already filled in, so no server is needed.
 
 ## Updating content
