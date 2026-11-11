@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mariyabuilders.vercel.app/sitemap.xml
